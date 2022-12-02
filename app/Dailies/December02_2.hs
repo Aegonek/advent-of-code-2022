@@ -1,19 +1,22 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE GADTs #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
-{-# LANGUAGE GADTs #-}
 
 module Dailies.December02_2 where
 
+import Control.Newtype (Newtype, under)
+import Data.Extra.List
+import Data.Function ((&))
 import Data.Functor (($>), (<&>))
-import Data.Maybe (mapMaybe, fromMaybe)
+import Data.List (elemIndex)
+import Data.Maybe (fromMaybe, mapMaybe)
 import Paths_advent_of_code
 import qualified Text.ParserCombinators.ReadP as Parse
 import Text.Read (readMaybe)
-import Data.List (elemIndex)
-import Data.Extra.List
-import Data.Function ((&))
 
 solution :: IO Int
 solution = do
@@ -26,7 +29,7 @@ data Figure = Rock | Scissors | Paper deriving (Eq, Show, Enum, Bounded)
 
 data Outcome = Win | Draw | Lose deriving (Eq, Show)
 
-data Move = Move {enemy :: Figure, outcome :: Outcome } deriving (Show)
+data Move = Move {enemy :: Figure, outcome :: Outcome} deriving (Show)
 
 instance Read Move where
   readsPrec _ = Parse.readP_to_S parser
@@ -50,9 +53,9 @@ instance Read Move where
 myFigure :: Move -> Figure
 myFigure Move {enemy, outcome} =
   case (enemy, outcome) of
-      (x, Win) -> unCycling $ succ $ Cycling x
-      (x, Lose) -> unCycling $ pred $ Cycling x
-      (x, Draw) -> x
+    (x, Win) -> under Cycling succ x
+    (x, Lose) -> under Cycling pred x
+    (x, Draw) -> x
 
 rateFigure :: Figure -> Int
 rateFigure = \case
@@ -69,10 +72,9 @@ rateOutcome = \case
 rate :: Move -> Int
 rate move@(Move {outcome}) = rateOutcome outcome + rateFigure (myFigure move)
 
-data Cycling a where
-  Cycling :: (Enum a, Bounded a, Eq a) => a -> Cycling a
+newtype Cycling a = Cycling a
 
-unCycling (Cycling x) = x
+instance Newtype (Cycling a) a
 
 instance (Enum a, Bounded a, Eq a) => Enum (Cycling a) where
   fromEnum (Cycling x) = fromEnum x

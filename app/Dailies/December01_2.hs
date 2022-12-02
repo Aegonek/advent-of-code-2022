@@ -3,33 +3,35 @@
 
 module Dailies.December01_2 where
 
-import Data.Foldable (foldlM, for_)
-import Text.Read (readMaybe)
-import Data.Ord (Down(..), getDown)
+import Control.Newtype (Newtype (pack), under, underF)
+import Data.Foldable (Foldable (..), foldlM, for_)
 import qualified Data.List as List
-import Prelude hiding (maximum, minimum)
+import Data.Maybe (fromMaybe)
+import Data.Ord (Down (..), getDown)
 import Paths_advent_of_code
+import Text.Read (readMaybe)
+import Prelude hiding (maximum, minimum)
 
-data State = State {best :: [Down Int], curr :: Int}
+data State = State {best :: [Int], curr :: Int}
 
-initialState = State (map Down [0, 0, 0]) 0
+initialState = State [0, 0, 0] 0
 
-impl01 :: IO Int
-impl01 = do
+solution :: IO Int
+solution = do
   lines <- lines <$> (readFile =<< getDataFileName "data/input02.txt")
-  State {best} <-
-    foldlM
-      ( \acc@(State {best, curr}) next ->
-          if null next
-            then
-              let updated = take 3 $ List.insert (Down curr) best
-               in pure $ State {best = updated, curr = 0}
-            else do
-              next' <- parseNumOrThrow next
-              pure $ State {best, curr = curr + next'}
-      )
-      initialState
-      lines
-  pure $ getDown $ sum best
+  let State {best} =
+        foldl'
+          ( \acc@(State {best, curr}) next ->
+              if null next
+                then
+                  let updated = take 3 $ underF Down (List.insert $ pack curr) best
+                   in State {best = updated, curr = 0}
+                else
+                  let next' = parseInt next
+                   in State {best, curr = curr + next'}
+          )
+          initialState
+          lines
+  pure $ sum best
   where
-    parseNumOrThrow str = maybe (error "Not a valid number. Shouldn't happen on this input") pure (readMaybe @Int str)
+    parseInt str = fromMaybe (error "Not a valid number. Shouldn't happen on this input") (readMaybe @Int str)

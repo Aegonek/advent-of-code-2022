@@ -9,7 +9,6 @@
 module Dailies.December02_2 where
 
 import Control.Newtype (Newtype, under)
-import Data.Extra.List
 import Data.Function ((&))
 import Data.Functor (($>), (<&>))
 import Data.List (elemIndex)
@@ -25,7 +24,7 @@ solution = do
       sum' = sum $ map rate moves
   return sum'
 
-data Figure = Rock | Scissors | Paper deriving (Eq, Show, Enum, Bounded)
+data Figure = Rock | Paper | Scissors deriving (Eq, Show, Enum, Bounded)
 
 data Outcome = Win | Draw | Lose deriving (Eq, Show)
 

@@ -18,7 +18,7 @@ solution = do
       sum' = sum $ map rate moves
   return sum'
 
-data Figure = Rock | Scissors | Paper deriving (Eq, Show)
+data Figure = Rock | Paper | Scissors deriving (Eq, Show)
 
 data Outcome = Win | Draw | Lose deriving (Eq, Show)
 

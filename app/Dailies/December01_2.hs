@@ -18,7 +18,7 @@ initialState = State [0, 0, 0] 0
 
 solution :: IO Int
 solution = do
-  lines <- lines <$> (readFile =<< getDataFileName "data/input02.txt")
+  lines <- lines <$> (readFile =<< getDataFileName "data/input01.txt")
   let State {best} =
         foldl'
           ( \acc@(State {best, curr}) next ->

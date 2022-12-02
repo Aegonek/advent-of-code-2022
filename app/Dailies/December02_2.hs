@@ -2,6 +2,7 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE GADTs #-}
 
 module Dailies.December02_2 where
 
@@ -11,6 +12,7 @@ import Paths_advent_of_code
 import qualified Text.ParserCombinators.ReadP as Parse
 import Text.Read (readMaybe)
 import Data.List (elemIndex)
+import Data.Extra.List
 import Data.Function ((&))
 
 solution :: IO Int
@@ -20,7 +22,7 @@ solution = do
       sum' = sum $ map rate moves
   return sum'
 
-data Figure = Rock | Scissors | Paper deriving (Eq, Show, Enum)
+data Figure = Rock | Scissors | Paper deriving (Eq, Show, Enum, Bounded)
 
 data Outcome = Win | Draw | Lose deriving (Eq, Show)
 
@@ -48,19 +50,9 @@ instance Read Move where
 myFigure :: Move -> Figure
 myFigure Move {enemy, outcome} =
   case (enemy, outcome) of
-      (x, Win) -> next x
-      (x, Lose) -> prev x
+      (x, Win) -> unCycling $ succ $ Cycling x
+      (x, Lose) -> unCycling $ pred $ Cycling x
       (x, Draw) -> x
-  where
-  figures = [Rock, Paper, Scissors]
-  next figure = 
-    let i = elemIndex figure figures & fromMaybe (error "Unreachable, this list contains all cases!")
-        i' = if i + 1 < length figures then i + 1 else 0
-    in figures !! i'
-  prev figure = 
-    let i = elemIndex figure figures & fromMaybe (error "Unreachable, this list contains all cases!")
-        i' = if i - 1 >= 0 then i - 1 else length figures - 1
-    in figures !! (let i' = (i - 1) in if i' >= 0 then i' else 2)
 
 rateFigure :: Figure -> Int
 rateFigure = \case
@@ -76,3 +68,14 @@ rateOutcome = \case
 
 rate :: Move -> Int
 rate move@(Move {outcome}) = rateOutcome outcome + rateFigure (myFigure move)
+
+data Cycling a where
+  Cycling :: (Enum a, Bounded a, Eq a) => a -> Cycling a
+
+unCycling (Cycling x) = x
+
+instance (Enum a, Bounded a, Eq a) => Enum (Cycling a) where
+  fromEnum (Cycling x) = fromEnum x
+  toEnum x = Cycling (toEnum x)
+  succ (Cycling x) = Cycling $ if x == maxBound then minBound else succ x
+  pred (Cycling x) = Cycling $ if x == minBound then maxBound else pred x

@@ -20,12 +20,15 @@ maintainer:         hypebringer16@gmail.com
 -- copyright:
 -- category:
 extra-source-files: CHANGELOG.md
+data-files:         data/*.txt
 
 executable advent-of-code
     main-is:          Main.hs
 
     other-modules:    Dailies.December01_1
                     , Dailies.December01_2
+                    , Dailies.December02_1
+                    , Paths_advent_of_code
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
     build-depends:    base ^>=4.16

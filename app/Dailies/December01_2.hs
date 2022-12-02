@@ -8,6 +8,7 @@ import Text.Read (readMaybe)
 import Data.Ord (Down(..), getDown)
 import qualified Data.List as List
 import Prelude hiding (maximum, minimum)
+import Paths_advent_of_code
 
 data State = State {best :: [Down Int], curr :: Int}
 
@@ -15,7 +16,7 @@ initialState = State (map Down [0, 0, 0]) 0
 
 impl01 :: IO Int
 impl01 = do
-  lines <- lines <$> readFile "E:\\advent-of-code\\data\\input"
+  lines <- lines <$> (readFile =<< getDataFileName "data/input02.txt")
   State {best} <-
     foldlM
       ( \acc@(State {best, curr}) next ->

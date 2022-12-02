@@ -6,6 +6,7 @@ module Dailies.December01_1 where
 import Data.Foldable (foldlM, for_)
 import Text.Read (readMaybe)
 import Prelude hiding (maximum, minimum)
+import Paths_advent_of_code
 
 data State = State {maximum, curr :: Int}
 
@@ -13,7 +14,7 @@ initialState = State 0 0
 
 impl01 :: IO Int
 impl01 = do
-  lines <- lines <$> readFile "E:\\advent-of-code\\data\\input"
+  lines <- lines <$> (readFile =<< getDataFileName "data/input02.txt")
   State {maximum} <-
     foldlM
       ( \acc@(State {maximum, curr}) next ->

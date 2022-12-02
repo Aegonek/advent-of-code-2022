@@ -24,8 +24,8 @@ extra-source-files: CHANGELOG.md
 executable advent-of-code
     main-is:          Main.hs
 
-    other-modules:    Dailies.January01
-                    , Dailies.January01_2
+    other-modules:    Dailies.December01_1
+                    , Dailies.December01_2
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
     build-depends:    base ^>=4.16

@@ -1,7 +1,7 @@
 module Main where
 
-import qualified Dailies.January01 as January01
-import qualified Dailies.January01_2 as January01_2
+import qualified Dailies.December01_1 as December01_1
+import qualified Dailies.December01_2 as December01_2
 
 main :: IO ()
-main = print =<< January01_2.impl01
+main = print =<< December01_2.impl01

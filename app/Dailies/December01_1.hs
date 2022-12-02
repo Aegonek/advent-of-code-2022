@@ -1,7 +1,7 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE TypeApplications #-}
 
-module Dailies.January01 where
+module Dailies.December01_1 where
 
 import Data.Foldable (foldlM, for_)
 import Text.Read (readMaybe)

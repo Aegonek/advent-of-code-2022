@@ -29,6 +29,8 @@ executable advent-of-code
                     , Dailies.December01_2
                     , Dailies.December02_1
                     , Dailies.December02_2
+                    , Dailies.December03_1
+                    , Dailies.December03_2
                     , Paths_advent_of_code
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

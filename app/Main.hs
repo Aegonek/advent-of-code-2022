@@ -6,6 +6,8 @@ import qualified Dailies.December02_1 as December02_1
 import qualified Dailies.December02_2 as December02_2
 import qualified Dailies.December03_1 as December03_1
 import qualified Dailies.December03_2 as December03_2
+import qualified Dailies.December04_1 as December04_1
+import qualified Dailies.December04_2 as December04_2
 import System.Environment (getArgs)
 
 main :: IO ()
@@ -19,4 +21,6 @@ main = do
     "2-2" -> December02_2.solution
     "3-1" -> December03_1.solution
     "3-2" -> December03_2.solution
+    "4-1" -> December04_1.solution
+    "4-2" -> December04_2.solution
   print solution

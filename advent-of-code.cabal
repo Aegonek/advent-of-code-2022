@@ -34,8 +34,10 @@ executable advent-of-code
                     , Dailies.December04_1
                     , Dailies.December04_2
                     , Dailies.December05_1
+                    , Dailies.December05_2
                     , Data.Extra.List
                     , Text.Extra.ReadP
+                    , Control.Extra.Monad
                     , Paths_advent_of_code
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

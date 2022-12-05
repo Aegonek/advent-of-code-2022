@@ -1,6 +1,6 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE TypeApplications #-}
-module Dailies.December05_1 where
+module Dailies.December05_2 where
 
 import Paths_advent_of_code
 import Data.Extra.List (splitBy, findMap)
@@ -14,6 +14,7 @@ import Data.Functor ((<&>))
 import qualified Text.Extra.ReadP as Parse
 import Control.Monad.ST (runST)
 import Data.STRef (newSTRef, readSTRef, writeSTRef, modifySTRef')
+import Control.Extra.Monad ((<<))
 
 solution :: IO String
 solution = do
@@ -51,14 +52,14 @@ evalMove (Move {quantity, from, to}) (Cargo {stacks}) = runST $ do
   fromStack <- readSTRef fromStackRef
   let (taken, left) = splitAt quantity fromStack
   writeSTRef fromStackRef left
-  modifySTRef' toStackRef (reverse taken<>)
+  modifySTRef' toStackRef (taken<>)
   
   Cargo <$> traverse readSTRef stacks'
 
 instance Read Move where
   readsPrec _ = 
     Parse.readP_to_S $ do
-      quantity <- Parse.string "move " >> Parse.int
-      from <- Parse.string " from " >> Parse.int
-      to <- Parse.string " to " >> Parse.int
+      quantity <- Parse.string "move " >> Parse.int << Parse.char ' '
+      from <- Parse.string "from " >> Parse.int << Parse.char ' '
+      to <- Parse.string "to " >> Parse.int
       return $ Move {quantity, from, to}

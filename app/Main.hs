@@ -8,6 +8,7 @@ import qualified Dailies.December03_1 as December03_1
 import qualified Dailies.December03_2 as December03_2
 import qualified Dailies.December04_1 as December04_1
 import qualified Dailies.December04_2 as December04_2
+import qualified Dailies.December05_1 as December05_1
 import System.Environment (getArgs)
 
 main :: IO ()
@@ -15,12 +16,13 @@ main = do
   args <- getArgs
   let task = head args
   solution <- case task of
-    "1-1" -> December01_1.solution
-    "1-2" -> December01_2.solution
-    "2-1" -> December02_1.solution
-    "2-2" -> December02_2.solution
-    "3-1" -> December03_1.solution
-    "3-2" -> December03_2.solution
-    "4-1" -> December04_1.solution
-    "4-2" -> December04_2.solution
+    "1-1" -> show <$> December01_1.solution
+    "1-2" -> show <$> December01_2.solution
+    "2-1" -> show <$> December02_1.solution
+    "2-2" -> show <$> December02_2.solution
+    "3-1" -> show <$> December03_1.solution
+    "3-2" -> show <$> December03_2.solution
+    "4-1" -> show <$> December04_1.solution
+    "4-2" -> show <$> December04_2.solution
+    "5-1" -> show <$> December05_1.solution
   print solution

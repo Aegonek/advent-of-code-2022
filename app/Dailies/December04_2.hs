@@ -6,6 +6,7 @@ import Data.Function ((&))
 import Data.Functor ((<&>))
 import Data.List (findIndex, intersect)
 import Data.Maybe (fromMaybe)
+import Data.Extra.List (splitByEq)
 import Paths_advent_of_code
 
 solution :: IO Int
@@ -23,18 +24,9 @@ solution = do
             ( \ranges ->
                 let HomoTuple (xs, ys) = fmap (uncurry enumFromTo) (HomoTuple ranges)
                     cross = xs `intersect` ys
-                 in length cross > 0
+                 in not $ null cross
             )
   return $ length overlapping
-
-splitBy :: (a -> Bool) -> [a] -> ([a], [a])
-splitBy pred xs =
-  let i = findIndex pred xs & fromMaybe (length xs)
-      (xs', ys') = splitAt i xs
-   in (xs', drop 1 ys')
-
-splitByEq :: (Eq a) => a -> [a] -> ([a], [a])
-splitByEq x = splitBy (== x)
 
 newtype HomoTuple a = HomoTuple (a, a)
 
